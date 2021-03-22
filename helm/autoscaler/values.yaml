@@ -1,5 +1,6 @@
 machineset:
   infrastructure_id: cluster-0e58-scm6d
-  role: autoscale
+  role: proactive-autoscaler
   zone: us-west-2a
   ami_id: ami-010de485a2ee23e5e
+  replicas: 0 
