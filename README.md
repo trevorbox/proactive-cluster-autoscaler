@@ -27,5 +27,5 @@ helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --create-nam
 ## Scale the application
 
 ```sh
-helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --set machineset.replicas=10
+helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --set replicaCount=10
 ```

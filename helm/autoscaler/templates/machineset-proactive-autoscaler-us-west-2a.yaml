@@ -6,7 +6,7 @@ metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
 spec:
-  replicas: {{ .Values.machineset.replicas }}
+  replicas: 0
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
