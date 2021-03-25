@@ -15,6 +15,8 @@ helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-oper
 > Note: verify the [RHCOS AMI](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/html/installing/installing-on-aws#installation-aws-user-infra-rhcos-ami_installing-restricted-networks-aws) is correct in values.yaml.
 
 ```sh
+oc new-project proactive-autoscaler-test
+oc new-project proactive-autoscaler-test2
 helm upgrade -i autoscaler helm/autoscaler --set machineset.infrastructure_id=$(oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster) -n proactive-autoscaler-test --create-namespace
 ```
 
@@ -24,7 +26,15 @@ helm upgrade -i autoscaler helm/autoscaler --set machineset.infrastructure_id=$(
 helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --create-namespace
 ```
 
-## Scale the application
+You should see the following number of pause pods in each namespace for the different watermarks when 10 test-app pods are deployed...
+
+| Watermark Name        | Namespace                  | # of Pause Pods |
+| --------------------- | -------------------------- | --------------- |
+| proactive-autoscaler  | proactive-autoscaler-test  | 2               |
+| proactive-autoscaler2 | proactive-autoscaler-test  | 8               |
+| proactive-autoscaler  | proactive-autoscaler-test2 | 1               |
+
+## Scale the application up or down to test the pause pods
 
 ```sh
 helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --set replicaCount=10

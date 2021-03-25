@@ -1,10 +1,10 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: NodeScalingWatermark
 metadata:
-  name: {{ .Values.machineset.role }}
+  name: {{ printf "%v2" .Values.machineset.role }}
 spec:
   priorityClassName: proactive-node-autoscaling-pods
-  watermarkPercentage: 20
+  watermarkPercentage: 80
   pausePodSize:
     cpu: 100m
     memory: 128Mi
