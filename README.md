@@ -23,7 +23,7 @@ helm upgrade -i autoscaler helm/autoscaler --set machineset.infrastructure_id=$(
 ## Deploy test application
 
 ```sh
-helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --create-namespace
+helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --create-namespace --set replicaCount=10
 ```
 
 You should see the following number of pause pods in each namespace for the different watermarks when 10 test-app pods are deployed...
@@ -37,5 +37,5 @@ You should see the following number of pause pods in each namespace for the diff
 ## Scale the application up or down to test the pause pods
 
 ```sh
-helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --set replicaCount=10
+helm upgrade -i test-app helm/test-app -n proactive-autoscaler-test --set replicaCount=1
 ```
