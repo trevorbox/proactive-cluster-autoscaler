@@ -22,6 +22,10 @@ spec:
       metadata:
         labels:
           {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.role }}
+      taints:
+        - effect: NoSchedule
+          key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.role }}
+          value: ''
       providerSpec:
         value:
           userDataSecret:

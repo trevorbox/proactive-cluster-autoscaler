@@ -2,7 +2,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: NodeScalingWatermark
 metadata:
   name: {{ printf "%v" .Values.machineset.role }}
-  namespace: proactive-autoscaler-test2
+  namespace: proactive-node-scaling-test2
 spec:
   priorityClassName: proactive-node-autoscaling-pods
   watermarkPercentage: 100
@@ -11,3 +11,7 @@ spec:
     memory: 1280Mi
   nodeSelector:
     {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.role }}
+  tolerations:
+    - key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.role }}
+      operator: "Exists"
+      effect: "NoSchedule"

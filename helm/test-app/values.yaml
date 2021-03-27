@@ -72,8 +72,9 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: 
-  node-role.kubernetes.io/proactive-autoscaler: ''
+nodeSelector:
+  key: 'node-role.kubernetes.io/proactive-autoscaler'
+  value: "''"
 
 tolerations: []
 

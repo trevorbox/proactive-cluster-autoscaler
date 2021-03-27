@@ -10,3 +10,7 @@ spec:
     memory: 128Mi
   nodeSelector:
     {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.role }}
+  tolerations:
+    - key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.role }}
+      operator: "Exists"
+      effect: "NoSchedule"
