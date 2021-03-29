@@ -38,8 +38,8 @@ helm upgrade -i test-app helm/test-app -n proactive-node-scaling-test --set repl
 
 You should see the following number of pause pods in each namespace for the different watermarks when 10 test-app pods are deployed...
 
-| Watermark Name        | Namespace                  | # of Pause Pods |
-| --------------------- | -------------------------- | --------------- |
+| Watermark Name        | Namespace                    | # of Pause Pods |
+| --------------------- | ---------------------------- | --------------- |
 | proactive-autoscaler  | proactive-node-scaling-test  | 2               |
 | proactive-autoscaler2 | proactive-node-scaling-test  | 8               |
 | proactive-autoscaler  | proactive-node-scaling-test2 | 1               |
