@@ -79,3 +79,9 @@ helm upgrade -i test-app helm/test-app -n proactive-node-scaling-negative-test -
 ```sh
 helm upgrade -i test-app helm/test-app -n proactive-node-scaling-test --set replicaCount=1
 ```
+
+## Try gpu
+
+```sh
+helm upgrade -i pytorch-gpu-app helm/pytorch-gpu-app -n proactive-node-scaling-test2 --set replicaCount=1
+```

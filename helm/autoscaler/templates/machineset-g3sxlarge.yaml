@@ -1,0 +1,68 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  labels:
+    machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
+  name: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.g3sxlarge.role .Values.machineset.zone }}
+  namespace: openshift-machine-api
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
+      machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.g3sxlarge.role .Values.machineset.zone }}
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
+        machine.openshift.io/cluster-api-machine-role: {{ .Values.machineset.g3sxlarge.role }}
+        machine.openshift.io/cluster-api-machine-type: {{ .Values.machineset.g3sxlarge.role }}
+        machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.g3sxlarge.role .Values.machineset.zone }}
+    spec:
+      metadata: 
+        labels:
+          workload: {{ .Values.machineset.g3sxlarge.role }}
+      taints:
+      - effect: NoSchedule
+        key: workload
+        value: {{ .Values.machineset.g3sxlarge.role }}    
+      providerSpec:
+        value:
+          ami:
+            id: {{ .Values.machineset.ami_id }}
+          apiVersion: awsproviderconfig.openshift.io/v1beta1
+          blockDevices:
+          - ebs:
+              encrypted: true
+              iops: 2000
+              kmsKey:
+                arn: ""
+              volumeSize: 100
+              volumeType: io1
+          credentialsSecret:
+            name: aws-cloud-credentials
+          deviceIndex: 0
+          iamInstanceProfile:
+            id: {{ .Values.machineset.infrastructure_id }}-worker-profile
+          instanceType: g3s.xlarge
+          kind: AWSMachineProviderConfig
+          metadata:
+            creationTimestamp: null
+          placement:
+            availabilityZone: {{ .Values.machineset.zone }}
+            region: {{ .Values.machineset.region }}
+          securityGroups:
+          - filters:
+            - name: tag:Name
+              values:
+              - {{ .Values.machineset.infrastructure_id }}-worker-sg
+          subnet:
+            filters:
+            - name: tag:Name
+              values:
+              - {{ printf "%v-private-%v" .Values.machineset.infrastructure_id .Values.machineset.zone }}
+          tags:
+          - name: {{ printf "kubernetes.io/cluster/%v" .Values.machineset.infrastructure_id }}
+            value: owned
+          userDataSecret:
+            name: worker-user-data

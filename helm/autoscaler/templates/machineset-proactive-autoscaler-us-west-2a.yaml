@@ -31,8 +31,8 @@ spec:
           userDataSecret:
             name: worker-user-data
           placement:
-            availabilityZone: us-west-2a
-            region: us-west-2
+            availabilityZone: {{ .Values.machineset.zone }}
+            region: {{ .Values.machineset.region }}
           credentialsSecret:
             name: aws-cloud-credentials
           instanceType: m5.large
@@ -62,7 +62,7 @@ spec:
             filters:
               - name: 'tag:Name'
                 values:
-                  - {{ .Values.machineset.infrastructure_id }}-private-us-west-2a
+                  - {{ printf "%v-private-%v" .Values.machineset.infrastructure_id .Values.machineset.zone }}
           apiVersion: awsproviderconfig.openshift.io/v1beta1
           iamInstanceProfile:
             id: {{ .Values.machineset.infrastructure_id }}-worker-profile

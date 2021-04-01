@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "Before assembling"
+
+/usr/libexec/s2i/assemble
+
+rc=$?
+
+if [ $rc -eq 0 ]; then
+    echo "After successful assembling"
+    rm /opt/app-root/src/requirements.txt
+else
+    echo "After failed assembling"
+fi
+
+exit $rc
+
