@@ -21,11 +21,11 @@ spec:
     spec:
       metadata: 
         labels:
-          workload: {{ .Values.machineset.g3sxlarge.role }}
+          {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.g3sxlarge.role }}
       taints:
       - effect: NoSchedule
-        key: workload
-        value: {{ .Values.machineset.g3sxlarge.role }}    
+        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        value: '' 
       providerSpec:
         value:
           ami:

@@ -1,0 +1,17 @@
+﻿kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: python-38
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations:
+        openshift.io/imported-from: 'registry.access.redhat.com/ubi8/python-38:latest'
+      from:
+        kind: DockerImage
+        name: 'registry.access.redhat.com/ubi8/python-38:latest'
+      importPolicy: {}
+      referencePolicy:
+        type: Source
