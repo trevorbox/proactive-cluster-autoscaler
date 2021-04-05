@@ -24,6 +24,10 @@ helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-oper
 
 > TODO create chart for subscriptions
 
+```sh
+oc new-project gpu-operator-resources
+```
+
 ## Create Cluster Autoscaler
 
 > Note: verify the [RHCOS AMI](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/html/installing/installing-on-aws#installation-aws-user-infra-rhcos-ami_installing-restricted-networks-aws) is correct in values.yaml.
@@ -163,7 +167,7 @@ kernel-devel-4.18.0-147.3.1.el8_1.x86_64 : Development package for building
 Deploy the pytorch-app (which also builds the app)...
 
 ```sh
-helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=0
+helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=1
 ```
 
 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/getting-started.html#cuda-fp16-matrix-multiply>
