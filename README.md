@@ -22,7 +22,9 @@ helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-oper
 
 ## Install the GPU and NFD operators from OLM in the openshift-operators namespace
 
-> TODO create chart for subscriptions. You can follow the instructions from <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html#openshift-gpu-support-install-via-operatorhub> to install from operatorhub.
+```sh
+helm upgrade -i gpu-nfd-operators helm/operators -n openshift-operators
+```
 
 Create the gpu-operator-resources namespace...
 
@@ -170,5 +172,3 @@ Deploy the pytorch-app (which also builds the app)...
 ```sh
 helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=1
 ```
-
-<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/getting-started.html#cuda-fp16-matrix-multiply>
