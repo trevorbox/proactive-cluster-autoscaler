@@ -56,7 +56,7 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
   limits:
-   nvidia.com/gpu: 1
+    nvidia.com/gpu: 1
 
 autoscaling:
   enabled: false
