@@ -20,7 +20,7 @@ helm upgrade -i proactive-node-scaling-test-namespaces helm/namespaces -n proact
 helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-operator -n proactive-node-scaling-operator
 ```
 
-## Install the GPU and NFD operators from OLM in the openshift-operators namespace.
+## Install the GPU and NFD operators from OLM in the openshift-operators namespace
 
 > TODO create chart for subscriptions
 
@@ -88,7 +88,7 @@ helm upgrade -i test-app helm/test-app -n proactive-node-scaling-test --set repl
 
 Get entitlement...
 
-1. Navigate to https://access.redhat.com/management/systems
+1. Navigate to <https://access.redhat.com/management/systems>
 2. Create a new system, call it whatever you like
 3. Select the newly created system
 4. Select Subscriptions tab
