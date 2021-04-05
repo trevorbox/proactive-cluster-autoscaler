@@ -165,3 +165,5 @@ Deploy the pytorch-app (which also builds the app)...
 ```sh
 helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=0
 ```
+
+<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/getting-started.html#cuda-fp16-matrix-multiply>

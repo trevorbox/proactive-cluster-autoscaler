@@ -1,15 +1,12 @@
 import torch
 import time
-import nvsmi
 
 while True:
 
   print(torch.rand(5, 3))
 
   try:
-    nvsmi.get_gpus()
-    nvsmi.get_available_gpus()
-    nvsmi.get_gpu_processes()
+    os.system('nvidia-smi')
   except :
     print("No nvidia-smi (or other error)...")
   
