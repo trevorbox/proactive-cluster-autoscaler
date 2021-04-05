@@ -20,6 +20,16 @@ helm upgrade -i proactive-node-scaling-test-namespaces helm/namespaces -n proact
 helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-operator -n proactive-node-scaling-operator
 ```
 
+## Install the GPU and NFD operators from OLM in the openshift-operators namespace
+
+> TODO create chart for subscriptions. You can follow the instructions from <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html#openshift-gpu-support-install-via-operatorhub> to install from operatorhub.
+
+Create the gpu-operator-resources namespace...
+
+```sh
+oc new-project gpu-operator-resources
+```
+
 ## Create Cluster Autoscaler
 
 > Note: verify the [RHCOS AMI](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/html/installing/installing-on-aws#installation-aws-user-infra-rhcos-ami_installing-restricted-networks-aws) is correct in values.yaml.
@@ -79,3 +89,86 @@ helm upgrade -i test-app helm/test-app -n proactive-node-scaling-negative-test -
 ```sh
 helm upgrade -i test-app helm/test-app -n proactive-node-scaling-test --set replicaCount=1
 ```
+
+## Try gpu
+
+Get entitlement...
+
+1. Navigate to <https://access.redhat.com/management/systems>
+2. Create a new system, call it whatever you like
+3. Select the newly created system
+4. Select Subscriptions tab
+5. Select Attach Subscription
+6. Search and add the "Red Hat Developer Subscription for Individuals" Subscription
+7. In the same window select the Download Certificates button
+8. Unzip the consumer_export within the zipped file
+9. Grab the location of consumer_export/export/entitlement_certificates/*.pem file
+
+Follow the Instructions from <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html#openshift-gpu-install-gpu-operator-via-helmv3> to test the entitlement...
+
+```sh
+cp <path/to/pem/file>/<certificate-file-name>.pem nvidia.pem
+curl -O  https://raw.githubusercontent.com/openshift-psap/blog-artifacts/master/how-to-use-entitled-builds-with-ubi/0003-cluster-wide-machineconfigs.yaml.template
+# if > OCP 4.6 modify the spec.config.ignition.version to 3.2.0 for all MachineConfigs
+sed  "s/BASE64_ENCODED_PEM_FILE/$(base64 -w0 nvidia.pem)/g" 0003-cluster-wide-machineconfigs.yaml.template > 0003-cluster-wide-machineconfigs.yaml
+oc create -f 0003-cluster-wide-machineconfigs.yaml
+oc get machineconfig | grep entitlement
+cat << EOF >> mypod.yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+ name: cluster-entitled-build-pod
+spec:
+ containers:
+   - name: cluster-entitled-build
+     image: registry.access.redhat.com/ubi8:latest
+     command: [ "/bin/sh", "-c", "dnf search kernel-devel --showduplicates" ]
+ restartPolicy: Never
+EOF
+oc create -f mypod.yaml
+oc logs cluster-entitled-build-pod -n default
+```
+
+Should see something similar to the following...
+
+```sh
+Updating Subscription Management repositories.
+Unable to read consumer identity
+Subscription Manager is operating in container mode.
+Red Hat Enterprise Linux 8 for x86_64 - AppStre  15 MB/s |  14 MB     00:00    
+Red Hat Enterprise Linux 8 for x86_64 - BaseOS   15 MB/s |  13 MB     00:00    
+Red Hat Universal Base Image 8 (RPMs) - BaseOS  493 kB/s | 760 kB     00:01    
+Red Hat Universal Base Image 8 (RPMs) - AppStre 2.0 MB/s | 3.1 MB     00:01    
+Red Hat Universal Base Image 8 (RPMs) - CodeRea  12 kB/s | 9.1 kB     00:00    
+====================== Name Exactly Matched: kernel-devel ======================
+kernel-devel-4.18.0-80.1.2.el8_0.x86_64 : Development package for building
+                                        : kernel modules to match the kernel
+kernel-devel-4.18.0-80.el8.x86_64 : Development package for building kernel
+                                  : modules to match the kernel
+kernel-devel-4.18.0-80.4.2.el8_0.x86_64 : Development package for building
+                                        : kernel modules to match the kernel
+kernel-devel-4.18.0-80.7.1.el8_0.x86_64 : Development package for building
+                                        : kernel modules to match the kernel
+kernel-devel-4.18.0-80.11.1.el8_0.x86_64 : Development package for building
+                                         : kernel modules to match the kernel
+kernel-devel-4.18.0-147.el8.x86_64 : Development package for building kernel
+                                   : modules to match the kernel
+kernel-devel-4.18.0-80.11.2.el8_0.x86_64 : Development package for building
+                                         : kernel modules to match the kernel
+kernel-devel-4.18.0-80.7.2.el8_0.x86_64 : Development package for building
+                                        : kernel modules to match the kernel
+kernel-devel-4.18.0-147.0.3.el8_1.x86_64 : Development package for building
+                                         : kernel modules to match the kernel
+kernel-devel-4.18.0-147.0.2.el8_1.x86_64 : Development package for building
+                                         : kernel modules to match the kernel
+kernel-devel-4.18.0-147.3.1.el8_1.x86_64 : Development package for building
+                                         : kernel modules to match the kernel
+```
+
+Deploy the pytorch-app (which also builds the app)...
+
+```sh
+helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=1
+```
+
+<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/getting-started.html#cuda-fp16-matrix-multiply>

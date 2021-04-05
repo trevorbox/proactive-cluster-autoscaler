@@ -1,0 +1,37 @@
+﻿kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: pytorch-app
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'pytorch-app:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'python-38:latest'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: {{ .Values.buildConfig.git.uri }}
+      ref: {{ .Values.buildConfig.git.ref }}
+    contextDir: pytorch-app
+  triggers:
+    - type: GitHub
+      github:
+        secret: 6a0csHIMJT4HBLaQjCFE
+    - type: Generic
+      generic:
+        secret: YS3UdmhywDBFv2K_oSoj
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange: {}
+  runPolicy: Serial
