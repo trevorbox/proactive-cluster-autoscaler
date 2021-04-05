@@ -22,7 +22,9 @@ helm upgrade -i proactive-node-scaling-operator helm/proactive-node-scaling-oper
 
 ## Install the GPU and NFD operators from OLM in the openshift-operators namespace
 
-> TODO create chart for subscriptions
+> TODO create chart for subscriptions. You can follow the instructions from <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html#openshift-gpu-support-install-via-operatorhub> to install from operatorhub.
+
+Create the gpu-operator-resources namespace...
 
 ```sh
 oc new-project gpu-operator-resources
@@ -130,7 +132,6 @@ oc logs cluster-entitled-build-pod -n default
 Should see something similar to the following...
 
 ```sh
-//Output
 Updating Subscription Management repositories.
 Unable to read consumer identity
 Subscription Manager is operating in container mode.
