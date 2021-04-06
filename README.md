@@ -172,3 +172,9 @@ Deploy the pytorch-app (which also builds the app)...
 ```sh
 helm upgrade -i pytorch-app helm/pytorch-app -n proactive-node-scaling-test2 --set image.repository=image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-test2/pytorch-app --set replicaCount=1
 ```
+
+Alternatively, generate the Dockerfile and scripts from s2i for building the image locally...
+
+```sh
+s2i build pytorch-app/ registry.access.redhat.com/ubi8/python-38:latest --as-dockerfile=Dockerfile
+```
