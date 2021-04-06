@@ -1,0 +1,15 @@
+{{- range .Values.namespaces }}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: default
+  namespace: {{ . }}
+spec:
+  hard:
+    requests.cpu: '4'
+    requests.memory: 10Gi
+    requests.storage: 200Gi
+    services.loadbalancers: '2'
+...
+{{- end }}

@@ -3,25 +3,26 @@ kind: ClusterAutoscaler
 metadata:
   name: default
 spec:
-  podPriorityThreshold: -10 
+  maxNodeProvisionTime: 30m
+  podPriorityThreshold: -10
   resourceLimits:
-    maxNodesTotal: 24 
     cores:
-      min: 8 
-      max: 128 
-    memory:
-      min: 4 
-      max: 256 
+      max: 128
+      min: 8
     gpus:
-      - type: nvidia.com/gpu 
-        min: 0 
-        max: 16 
-      - type: amd.com/gpu 
-        min: 0 
-        max: 4 
-  scaleDown: 
-    enabled: true 
-    delayAfterAdd: 10m 
-    delayAfterDelete: 5m 
-    delayAfterFailure: 30s 
+      - max: 16
+        min: 0
+        type: nvidia.com/gpu
+      - max: 4
+        min: 0
+        type: amd.com/gpu
+    maxNodesTotal: 24
+    memory:
+      max: 256
+      min: 4
+  scaleDown:
+    delayAfterAdd: 10m
+    delayAfterDelete: 5m
+    delayAfterFailure: 30s
+    enabled: true
     unneededTime: 60s
