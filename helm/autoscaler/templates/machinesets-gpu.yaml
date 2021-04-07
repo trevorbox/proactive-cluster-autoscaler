@@ -17,8 +17,8 @@ spec:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: {{ $.Values.machinesets.infrastructure_id }}
-        machine.openshift.io/cluster-api-machine-role: node-role.kubernetes.io/gpu
-        machine.openshift.io/cluster-api-machine-type: {{ .instanceType }}
+        machine.openshift.io/cluster-api-machine-role: gpu
+        machine.openshift.io/cluster-api-machine-type: {{ .name }}
         machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" $.Values.machinesets.infrastructure_id .name .zone }}
     spec:
       metadata: 
