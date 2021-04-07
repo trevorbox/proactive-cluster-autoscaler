@@ -75,5 +75,5 @@ affinity: {}
 
 buildConfig:
   git:
-    ref: pytorch
+    ref: master
     uri: https://github.com/trevorbox/proactive-cluster-autoscaler

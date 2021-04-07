@@ -8,7 +8,10 @@ spec:
     to:
       kind: ImageStreamTag
       name: 'pytorch-app:latest'
-  resources: {}
+  resources: 
+    requests:
+      cpu: 100m
+      memory: 128Mi
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
   strategy:

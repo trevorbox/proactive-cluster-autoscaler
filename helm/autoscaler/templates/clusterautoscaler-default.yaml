@@ -3,12 +3,12 @@ kind: ClusterAutoscaler
 metadata:
   name: default
 spec:
-  maxNodeProvisionTime: 30m
+  maxNodeProvisionTime: 45m
   podPriorityThreshold: -10
   resourceLimits:
     cores:
       max: 128
-      min: 8
+      min: 16
     gpus:
       - max: 16
         min: 0
@@ -21,8 +21,8 @@ spec:
       max: 256
       min: 4
   scaleDown:
-    delayAfterAdd: 10m
+    delayAfterAdd: 30m
     delayAfterDelete: 5m
     delayAfterFailure: 30s
     enabled: true
-    unneededTime: 60s
+    unneededTime: 30m
