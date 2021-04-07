@@ -121,11 +121,15 @@ kind: Pod
 metadata:
  name: cluster-entitled-build-pod
 spec:
- containers:
-   - name: cluster-entitled-build
-     image: registry.access.redhat.com/ubi8:latest
-     command: [ "/bin/sh", "-c", "dnf search kernel-devel --showduplicates" ]
- restartPolicy: Never
+  containers:
+  - name: cluster-entitled-build
+    image: registry.access.redhat.com/ubi8:latest
+    command: [ "/bin/sh", "-c", "dnf search kernel-devel --showduplicates" ]
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  restartPolicy: Never
 EOF
 oc create -f mypod.yaml
 oc logs cluster-entitled-build-pod -n default

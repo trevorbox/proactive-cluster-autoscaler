@@ -16,7 +16,7 @@ spec:
     tolerations: 
       - operator: Exists
         effect: NoSchedule
-        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        key: "node-role.kubernetes.io/gpu"
   devicePlugin:
     nodeSelector: {}
     imagePullSecrets: []
@@ -30,7 +30,7 @@ spec:
     tolerations: 
       - operator: Exists
         effect: NoSchedule
-        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        key: "node-role.kubernetes.io/gpu"
     args:
       - '--mig-strategy=single'
       - '--pass-device-specs=true'
@@ -55,7 +55,7 @@ spec:
     tolerations: 
       - operator: Exists
         effect: NoSchedule
-        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        key: "node-role.kubernetes.io/gpu"
   gfd:
     nodeSelector: {}
     imagePullSecrets: []
@@ -69,7 +69,7 @@ spec:
     tolerations: 
       - operator: Exists
         effect: NoSchedule
-        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        key: "node-role.kubernetes.io/gpu"
     migStrategy: single
     #sleepInterval: 60s
   operator:
@@ -93,4 +93,4 @@ spec:
     tolerations: 
       - operator: Exists
         effect: NoSchedule
-        key: {{ printf "node-role.kubernetes.io/%v" .Values.machineset.g3sxlarge.role }}
+        key: "node-role.kubernetes.io/gpu"
