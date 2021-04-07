@@ -1,7 +1,5 @@
 machineset:
   role: proactive-autoscaler
-  g3sxlarge:
-    role: g3sxlarge
 namespaces:
   - proactive-node-scaling-test
   - proactive-node-scaling-test2
