@@ -1,9 +1,3 @@
-machineset:
-  infrastructure_id: cluster-0e58-scm6d
-  role: proactive-autoscaler
-  zone: us-west-2a
-  region: us-west-2
-  ami_id: ami-010de485a2ee23e5e
 machinesets:
   infrastructure_id: cluster-0e58-scm6d
   ami_id: ami-010de485a2ee23e5e
@@ -13,9 +7,9 @@ machinesets:
       zone: us-west-2a
       region: us-west-2
       machineAutoscaler:
-        enabled: false
+        enabled: true
         minReplicas: 0
-        maxReplicas: 2
+        maxReplicas: 1
     - name: p2-8xlarge
       instanceType: p2.8xlarge
       zone: us-west-2a
@@ -23,5 +17,14 @@ machinesets:
       machineAutoscaler:
         enabled: false
         minReplicas: 0
-        maxReplicas: 2
+        maxReplicas: 1
+  proactiveAutoscaler:
+    - name: m5-large
+      instanceType: m5.large
+      zone: us-west-2a
+      region: us-west-2
+      machineAutoscaler:
+        enabled: true
+        minReplicas: 0
+        maxReplicas: 12
 

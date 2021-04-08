@@ -37,7 +37,7 @@ oc new-project gpu-operator-resources
 > Note: verify the [RHCOS AMI](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/html/installing/installing-on-aws#installation-aws-user-infra-rhcos-ami_installing-restricted-networks-aws) is correct in values.yaml.
 
 ```sh
-helm upgrade -i autoscaler helm/autoscaler --set machineset.infrastructure_id=$(oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster) -n proactive-node-scaling-test
+helm upgrade -i autoscaler helm/autoscaler --set machinesets.infrastructure_id=$(oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster) -n proactive-node-scaling-test
 ```
 
 ## Deploy test application

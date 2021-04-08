@@ -1,4 +1,4 @@
-{{- range .Values.machinesets.gpus }}
+{{- range .Values.machinesets.proactiveAutoscaler }}
 ---
 apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
@@ -17,16 +17,16 @@ spec:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: {{ $.Values.machinesets.infrastructure_id }}
-        machine.openshift.io/cluster-api-machine-role: gpu
+        machine.openshift.io/cluster-api-machine-role: proactive-autoscaler
         machine.openshift.io/cluster-api-machine-type: {{ .name }}
         machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" $.Values.machinesets.infrastructure_id .name .zone }}
     spec:
       metadata: 
         labels:
-          node-role.kubernetes.io/gpu: ''
+          node-role.kubernetes.io/proactive-autoscaler: ''
       taints:
       - effect: NoSchedule
-        key: node-role.kubernetes.io/gpu
+        key: node-role.kubernetes.io/proactive-autoscaler
         value: ''
       providerSpec:
         value:
@@ -34,13 +34,13 @@ spec:
             id: {{ $.Values.machinesets.ami_id }}
           apiVersion: awsproviderconfig.openshift.io/v1beta1
           blockDevices:
-          - ebs:
-              encrypted: true
-              iops: 2000
-              kmsKey:
-                arn: ""
-              volumeSize: 100
-              volumeType: io1
+            - ebs:
+                encrypted: true
+                iops: 0
+                kmsKey:
+                  arn: ''
+                volumeSize: 120
+                volumeType: gp2
           credentialsSecret:
             name: aws-cloud-credentials
           deviceIndex: 0
