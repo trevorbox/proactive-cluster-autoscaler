@@ -9,15 +9,15 @@ machinesets:
       machineAutoscaler:
         enabled: true
         minReplicas: 0
-        maxReplicas: 2
+        maxReplicas: 1
     - name: p2-8xlarge
       instanceType: p2.8xlarge
       zone: us-west-2a
       region: us-west-2
       machineAutoscaler:
-        enabled: true
+        enabled: false
         minReplicas: 0
-        maxReplicas: 2
+        maxReplicas: 1
   proactiveAutoscaler:
     - name: m5-large
       instanceType: m5.large
